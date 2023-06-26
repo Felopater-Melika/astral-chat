@@ -55,3 +55,5 @@ cache/
 
 
 apps/mobile-e2e/artifacts
+
+.env
