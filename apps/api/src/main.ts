@@ -3,11 +3,13 @@
  * This is only a minimal backend to get started.
  */
 
-import {Logger, LoggerErrorInterceptor} from 'nestjs-pino'
-import {HttpAdapterHost, NestFactory} from '@nestjs/core';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import {PrismaClientExceptionFilter, PrismaService} from "nestjs-prisma";
+import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
+import { ValidationPipe } from '@nestjs/common';
+import { logger } from 'nx/src/utils/logger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -22,8 +24,13 @@ async function bootstrap() {
   // prisma exception filter
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    })
+  );
   const port = process.env.PORT || 3000;
+  logger.info(`Listening at http://localhost:${port}/${globalPrefix}`);
   await app.listen(port);
 }
 

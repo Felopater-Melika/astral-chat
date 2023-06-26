@@ -2,14 +2,17 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {PrismaModule} from "nestjs-prisma";
-import {LoggerModule} from "nestjs-pino";
+import { PrismaModule } from 'nestjs-prisma';
+import { LoggerModule } from 'nestjs-pino';
+import { AuthModule } from '../auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
     PrismaModule.forRoot({
-    isGlobal: true,
-  }),
+      isGlobal: true,
+    }),
     LoggerModule.forRoot({
       pinoHttp: {
         customProps: (req, res) => ({
@@ -23,6 +26,24 @@ import {LoggerModule} from "nestjs-pino";
         },
       },
     }),
+    MailerModule.forRoot({
+      transport: {
+        service: 'gmail',
+        user: 'smtp.gmail.com',
+        port: 465,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+        },
+      },
+      defaults: {
+        from: process.env.EMAIL,
+      },
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
