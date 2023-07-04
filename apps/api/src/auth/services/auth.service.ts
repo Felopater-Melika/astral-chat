@@ -38,7 +38,7 @@ export class AuthService {
       .sendMail({
         to: dto.email,
         subject: 'Verify your email address',
-        html: `<a href="http://localhost:3000/api/auth/verify?token=${verificationToken.token}">Verify your email address</a>`,
+        html: `<a href="http://localhost:3000/api/auth/verify/${verificationToken.token}">Verify your email address</a>`,
       })
       .then(() => {
         Logger.log('Email sent');
@@ -67,7 +67,7 @@ export class AuthService {
     }
     return {
       access_token: this.jwtService.sign({
-        id: user.id,
+        sub: user.id,
         username: user.username,
       }),
     };

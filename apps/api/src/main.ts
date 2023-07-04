@@ -29,6 +29,8 @@ async function bootstrap() {
       whitelist: true,
     })
   );
+  app.enableCors(); // Enable CORS for all routes
+
   const port = process.env.PORT || 3000;
   logger.info(`Listening at http://localhost:${port}/${globalPrefix}`);
   await app.listen(port);

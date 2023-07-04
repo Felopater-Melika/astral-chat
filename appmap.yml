@@ -1,0 +1,11 @@
+name: astral-chat
+packages:
+  - path: dist\apps\api
+  - path: apps\api
+  - path: apps\api-e2e
+  - path: apps\mobile
+  - path: apps\mobile-e2e
+  - path: libs
+  - path: tools\scripts
+language: javascript
+appmap_dir: tmp/appmap
