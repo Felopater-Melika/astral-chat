@@ -7,6 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       isGlobal: true,
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

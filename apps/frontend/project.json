@@ -1,20 +1,19 @@
 {
-  "name": "mobile",
+  "name": "frontend",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/mobile/src",
+  "sourceRoot": "apps/frontend/src",
   "projectType": "application",
   "targets": {
     "start": {
       "executor": "@nx/expo:start",
       "options": {
-        "port": 8081,
-        "android": true
+        "port": 8081
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "nx start mobile"
+        "command": "nx start frontend"
       }
     },
     "run-ios": {
@@ -31,8 +30,7 @@
     },
     "build": {
       "executor": "@nx/expo:build",
-      "options": {
-      }
+      "options": {}
     },
     "submit": {
       "executor": "@nx/expo:submit",
@@ -45,7 +43,7 @@
     "download": {
       "executor": "@nx/expo:download",
       "options": {
-        "output": "apps/mobile/dist"
+        "output": "apps/frontend/dist"
       }
     },
     "sync-deps": {
@@ -72,7 +70,7 @@
       "executor": "@nx/expo:export",
       "options": {
         "platform": "all",
-        "outputDir": "../../dist/apps/mobile"
+        "outputDir": "../../dist/apps/frontend"
       }
     },
     "export-web": {
@@ -88,7 +86,7 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/mobile/**/*.{ts,tsx,js,jsx}"
+          "apps/frontend/**/*.{ts,tsx,js,jsx}"
         ]
       }
     },
@@ -98,7 +96,7 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "apps/mobile/jest.config.ts",
+        "jestConfig": "apps/frontend/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

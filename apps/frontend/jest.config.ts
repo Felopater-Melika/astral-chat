@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'mobile',
+  displayName: 'frontend',
   resolver: '@nx/jest/plugins/resolver',
   preset: 'jest-expo',
   transformIgnorePatterns: [
