@@ -1,23 +1,23 @@
 import axios from 'axios';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { ILogin, IRegister } from '../../../../libs/types';
 import { removeToken, storeToken } from '../utils/storage';
 import { useMutation } from '@tanstack/react-query';
+import Constants from 'expo-constants';
 
 const loginUser = async (credentials: ILogin) => {
-  const { data } = await axios.post(
-    'http://10.0.2.2:3000' + '/api/auth/login',
-    credentials
-  );
+  const apiUrl = Constants?.manifest?.extra?.API_URL;
+
+  const { data } = await axios.post(apiUrl + '/auth/login', credentials);
   await storeToken(data.access_token);
   return data;
 };
 
 const registerUser = async (credentials: IRegister) => {
-  const url = process.env.BASE_URL + '/api/auth/register';
-  console.log(url);
-  console.log(credentials);
-  const { data } = await axios.post(url, credentials);
-  console.log(data);
+  const apiUrl = Constants?.manifest?.extra?.API_URL;
+
+  const { data } = await axios.post(apiUrl + '/auth/register', credentials);
 
   return data;
 };

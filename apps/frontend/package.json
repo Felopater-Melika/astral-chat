@@ -19,7 +19,9 @@
     "@react-navigation/core": "*",
     "react-hook-form": "*",
     "axios": "*",
-    "@react-native-async-storage/async-storage": "*"
+    "@react-native-async-storage/async-storage": "*",
+    "@react-navigation/bottom-tabs": "*",
+    "expo-constants": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/frontend && cp package-lock.json apps/frontend",
