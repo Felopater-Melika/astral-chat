@@ -12,8 +12,4 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   username?: string;
-
-  @IsOptional()
-  @IsString()
-  hashedPassword?: string;
 }

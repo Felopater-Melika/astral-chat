@@ -21,7 +21,8 @@
     "axios": "*",
     "@react-native-async-storage/async-storage": "*",
     "@react-navigation/bottom-tabs": "*",
-    "expo-constants": "*"
+    "expo-constants": "*",
+    "@expo/vector-icons": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/frontend && cp package-lock.json apps/frontend",

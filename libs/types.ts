@@ -10,3 +10,9 @@ export interface IRegister {
   username: string;
   password: string;
 }
+
+export interface IUser {
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+}
