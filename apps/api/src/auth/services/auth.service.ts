@@ -25,7 +25,6 @@ export class AuthService {
     });
 
     console.log(user);
-    // Create verification token
     const verificationToken = await this.prisma.verificationToken.create({
       data: {
         userId: user.id,

@@ -59,13 +59,12 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@config-plugins/detox": "~5.0.1",
     "@expo/cli": "~0.7.3",
     "@nestjs/schematics": "^9.2.0",
     "@nestjs/testing": "^9.4.3",
     "@nx/detox": "16.4.0",
     "@nx/eslint-plugin": "16.4.0",
-    "@nx/expo": "^16.5.0",
+    "@nx/expo": "^16.5.2",
     "@nx/jest": "16.4.0",
     "@nx/js": "16.4.0",
     "@nx/linter": "16.4.0",

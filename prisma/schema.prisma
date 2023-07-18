@@ -23,9 +23,11 @@ model User {
   messages      Message[]
   conversations ConversationParticipant[]
 
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  VerificationToken VerificationToken[]
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  VerificationToken      VerificationToken[]
+  sentFriendRequests     FriendRequest[]     @relation("FriendRequestsSent")
+  receivedFriendRequests FriendRequest[]     @relation("FriendRequestsReceived")
 }
 
 model VerificationToken {
@@ -65,4 +67,21 @@ model Message {
   body           String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model FriendRequest {
+  id          String              @id @default(uuid())
+  status      FriendRequestStatus @default(PENDING)
+  senderId    String
+  sender      User                @relation("FriendRequestsSent", fields: [senderId], references: [id])
+  recipientId String
+  recipient   User                @relation("FriendRequestsReceived", fields: [recipientId], references: [id])
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 }
