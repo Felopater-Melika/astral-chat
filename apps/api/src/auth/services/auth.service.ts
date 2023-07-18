@@ -21,10 +21,9 @@ export class AuthService {
     delete dto.password;
     const user = await this.prisma.user.create({
       data: { ...dto, hashedPassword, emailVerified: false },
-      select: { id: true, username: true },
+      select: { id: true },
     });
 
-    console.log(user);
     const verificationToken = await this.prisma.verificationToken.create({
       data: {
         userId: user.id,

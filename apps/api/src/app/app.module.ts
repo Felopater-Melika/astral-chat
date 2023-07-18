@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { UserModule } from '../user/user.module';
 import { FriendRequestModule } from '../friend-request/friend-request.module';
+import { FriendshipModule } from '../friendship/friendship.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { FriendRequestModule } from '../friend-request/friend-request.module';
     AuthModule,
     UserModule,
     FriendRequestModule,
+    FriendshipModule,
   ],
   controllers: [],
   providers: [],

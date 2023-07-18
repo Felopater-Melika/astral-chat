@@ -41,20 +41,6 @@ describe('FriendRequestService_class', () => {
   });
 
   // Tests that findOne method works with valid input
-  it('test_find_one_valid_input', async () => {
-    const prismaServiceMock = {
-      friendRequest: {
-        findUnique: jest.fn(),
-      },
-    };
-    const friendRequestService = new FriendRequestService(
-      prismaServiceMock as any
-    );
-    await friendRequestService.findOne('1');
-    expect(prismaServiceMock.friendRequest.findUnique).toHaveBeenCalledWith({
-      where: { id: '1' },
-    });
-  });
 
   // Tests that update method works with valid input
   it('test_update_valid_input', async () => {

@@ -1,8 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateFriendRequestDto } from './create-friend-request.dto';
+import { IsEnum } from 'class-validator';
 
-export class UpdateFriendRequestDto extends PartialType(
-  CreateFriendRequestDto
-) {
+export class UpdateFriendRequestDto {
+  @IsEnum(['PENDING', 'ACCEPTED', 'REJECTED'])
   status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
 }

@@ -2,13 +2,13 @@ import {
   Controller,
   Get,
   Post,
-  Patch,
   Param,
   Delete,
   HttpCode,
   UseGuards,
   UnauthorizedException,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guards/auth.guard';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
@@ -27,8 +27,6 @@ export class FriendRequestController {
     if (!user) {
       throw new UnauthorizedException();
     }
-
-    console.log(dto.senderId);
     return this.friendRequestService.create(dto);
   }
 
@@ -39,15 +37,6 @@ export class FriendRequestController {
       throw new UnauthorizedException();
     }
     return this.friendRequestService.findAll(userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string, @GetUser() user) {
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-    return this.friendRequestService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)

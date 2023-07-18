@@ -36,13 +36,15 @@ describe('Api (e2e)', () => {
         .spec()
         .post('/auth/register')
         .withBody({
-          email: 'tessghtfedt@example.com',
+          email: 'test1@example.com',
           password: 'password',
           firstName: 'John',
           lastName: 'Doe',
           username: 'johndoe',
         })
-        .expectStatus(201);
+        .expectStatus(201)
+        .expectBodyContains('id')
+        .stores('user1Id', 'id');
     });
 
     it('/auth/login (POST)', () => {
@@ -63,13 +65,15 @@ describe('Api (e2e)', () => {
         .spec()
         .post('/auth/register')
         .withBody({
-          email: 'seconduser@example.com',
+          email: 'test2@example.com',
           password: 'password',
           firstName: 'Jane',
           lastName: 'Doe',
           username: 'janedoe',
         })
-        .expectStatus(201);
+        .expectStatus(201)
+        .expectBodyContains('id')
+        .stores('user2Id', 'id');
     });
 
     it('/auth/login (POST) - Second User', () => {
@@ -83,6 +87,32 @@ describe('Api (e2e)', () => {
         .expectStatus(200)
         .expectBodyContains('access_token')
         .stores('secondUserAt', 'access_token');
+    });
+
+    it('/auth/register (POST) - Delete User', () => {
+      return pactum
+        .spec()
+        .post('/auth/register')
+        .withBody({
+          email: 'delete@example.com',
+          password: 'password',
+          firstName: 'Delete',
+          lastName: 'Doe',
+          username: 'deleteDoe',
+        })
+        .expectStatus(201);
+    });
+    it('/auth/login (POST) - Delete User', () => {
+      return pactum
+        .spec()
+        .post('/auth/login')
+        .withBody({
+          username: 'deleteDoe',
+          password: 'password',
+        })
+        .expectStatus(200)
+        .expectBodyContains('access_token')
+        .stores('deleteUserAt', 'access_token');
     });
   });
   describe('User (e2e)', () => {
@@ -108,15 +138,15 @@ describe('Api (e2e)', () => {
         })
         .expectStatus(200);
     });
-    // it('/user/profile (DELETE)', () => {
-    //   return pactum
-    //     .spec()
-    //     .delete('/user/profile')
-    //     .withHeaders({
-    //       Authorization: 'Bearer $S{userAt}',
-    //     })
-    //     .expectStatus(200);
-    // });
+    it('/user/profile (DELETE)', () => {
+      return pactum
+        .spec()
+        .delete('/user/profile')
+        .withHeaders({
+          Authorization: 'Bearer $S{deleteUserAt}',
+        })
+        .expectStatus(200);
+    });
   });
   describe('Friend Request (e2e)', () => {
     // Test for creating a friend request
@@ -125,32 +155,22 @@ describe('Api (e2e)', () => {
         .spec()
         .post('/friend-request')
         .withBody({
-          senderId: '38d99b67-aeb4-4c8a-b9ce-d6ffe99ad36b',
-          recipientId: 'faaed67c-fa75-4fd9-b8b1-493fc1891fa3',
+          senderId: '$S{user1Id}',
+          recipientId: '$S{user2Id}',
         })
         .withHeaders({
           Authorization: 'Bearer $S{userAt}',
         })
-        .expectStatus(201);
+        .expectStatus(201)
+        .expectBodyContains('id')
+        .stores('friendRequestId', 'id');
     });
 
     // Test for getting all friend requests
     it('/friend-request (GET)', () => {
       return pactum
         .spec()
-        .get('/friend-request/38d99b67-aeb4-4c8a-b9ce-d6ffe99ad36b')
-        .withHeaders({
-          Authorization: 'Bearer $S{userAt}',
-        })
-        .expectStatus(200);
-    });
-
-    // Test for getting a specific friend request
-    it('/friend-request/:id (GET)', () => {
-      // Replace 'id' with the actual id of the friend request
-      return pactum
-        .spec()
-        .get('/friend-request/38d99b67-aeb4-4c8a-b9ce-d6ffe99ad36b')
+        .get('/friend-request/$S{user1Id}')
         .withHeaders({
           Authorization: 'Bearer $S{userAt}',
         })
@@ -162,7 +182,7 @@ describe('Api (e2e)', () => {
       // Replace 'id' with the actual id of the friend request
       return pactum
         .spec()
-        .patch('/friend-request/dd053584-ac4f-4ed9-806a-b1dc4ea79929')
+        .patch('/friend-request/$S{friendRequestId}')
         .withBody({
           status: 'ACCEPTED',
         })
@@ -177,11 +197,12 @@ describe('Api (e2e)', () => {
       // Replace 'id' with the actual id of the friend request
       return pactum
         .spec()
-        .delete('/friend-request/dd053584-ac4f-4ed9-806a-b1dc4ea79929')
+        .delete('/friend-request/$S{friendRequestId}')
         .withHeaders({
           Authorization: 'Bearer $S{userAt}',
         })
         .expectStatus(200);
     });
   });
+  // TODO: test the friendship endpoint
 });

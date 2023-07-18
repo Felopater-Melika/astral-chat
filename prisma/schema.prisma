@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -28,6 +25,19 @@ model User {
   VerificationToken      VerificationToken[]
   sentFriendRequests     FriendRequest[]     @relation("FriendRequestsSent")
   receivedFriendRequests FriendRequest[]     @relation("FriendRequestsReceived")
+
+  friendsAsUser1 Friendship[] @relation("Friendships1")
+  friendsAsUser2 Friendship[] @relation("Friendships2")
+}
+
+model Friendship {
+  id        String   @id @default(uuid())
+  user1     User     @relation("Friendships1", fields: [user1Id], references: [id])
+  user1Id   String
+  user2     User     @relation("Friendships2", fields: [user2Id], references: [id])
+  user2Id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
