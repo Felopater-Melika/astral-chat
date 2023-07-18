@@ -29,6 +29,6 @@ export class FriendshipController {
       throw new UnauthorizedException();
     }
 
-    return this.friendshipService.remove(id, user.id);
+    return this.friendshipService.remove(id);
   }
 }

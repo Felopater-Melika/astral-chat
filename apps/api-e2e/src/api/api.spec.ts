@@ -163,9 +163,34 @@ describe('Api (e2e)', () => {
         })
         .expectStatus(201)
         .expectBodyContains('id')
+        .stores('friendRequestIdDelete', 'id');
+    });
+    // Test for deleting a friend request
+    it('/friend-request/:id (DELETE)', () => {
+      return pactum
+        .spec()
+        .delete('/friend-request/$S{friendRequestIdDelete}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+    // Test for creating a friend request
+    it('/friend-request (POST)', () => {
+      return pactum
+        .spec()
+        .post('/friend-request')
+        .withBody({
+          senderId: '$S{user1Id}',
+          recipientId: '$S{user2Id}',
+        })
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(201)
+        .expectBodyContains('id')
         .stores('friendRequestId', 'id');
     });
-
     // Test for getting all friend requests
     it('/friend-request (GET)', () => {
       return pactum
@@ -176,10 +201,8 @@ describe('Api (e2e)', () => {
         })
         .expectStatus(200);
     });
-
     // Test for updating a friend request
     it('/friend-request/:id (PATCH)', () => {
-      // Replace 'id' with the actual id of the friend request
       return pactum
         .spec()
         .patch('/friend-request/$S{friendRequestId}')
@@ -191,18 +214,30 @@ describe('Api (e2e)', () => {
         })
         .expectStatus(200);
     });
-
-    // Test for deleting a friend request
-    it('/friend-request/:id (DELETE)', () => {
-      // Replace 'id' with the actual id of the friend request
+  });
+  describe('FriendShip  (e2e)', () => {
+    // Test for getting all friendships
+    it('/friendship (GET)', () => {
       return pactum
         .spec()
-        .delete('/friend-request/$S{friendRequestId}')
+        .get('/friendship')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200)
+        .expectBodyContains('id')
+        .stores('friendshipId', 'id');
+    });
+
+    // Test for deleting a friendship
+    it('/friendship/:id (DELETE)', () => {
+      return pactum
+        .spec()
+        .delete('/friendship/$S{friendshipId}')
         .withHeaders({
           Authorization: 'Bearer $S{userAt}',
         })
         .expectStatus(200);
     });
   });
-  // TODO: test the friendship endpoint
 });

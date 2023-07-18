@@ -17,28 +17,15 @@ export class FriendshipService {
     });
 
     return friendships.map((friendship) => {
-      return friendship.user1Id === userId
-        ? friendship.user2
-        : friendship.user1;
+      return {
+        id: friendship.id,
+        friend:
+          friendship.user1Id === userId ? friendship.user2 : friendship.user1,
+      };
     });
   }
 
-  async remove(id: string, userId: string) {
-    const friendship = await this.prisma.friendship.findUnique({
-      where: { id },
-      select: {
-        user1Id: true,
-        user2Id: true,
-      },
-    });
-
-    if (
-      !friendship ||
-      (friendship.user1Id !== userId && friendship.user2Id !== userId)
-    ) {
-      throw new UnauthorizedException();
-    }
-
+  async remove(id: string) {
     return this.prisma.friendship.delete({
       where: { id },
     });

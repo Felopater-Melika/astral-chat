@@ -53,7 +53,7 @@ export class FriendRequestService {
       return friendRequest;
     }
 
-    return friendRequest.id;
+    return friendRequest;
   }
 
   async remove(id: string) {
