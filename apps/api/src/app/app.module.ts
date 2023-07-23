@@ -7,6 +7,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { UserModule } from '../user/user.module';
 import { FriendRequestModule } from '../friend-request/friend-request.module';
 import { FriendshipModule } from '../friendship/friendship.module';
+import { ConversationModule } from '../conversations/conversation.module';
+import { MessageModule } from '../message/message.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { FriendshipModule } from '../friendship/friendship.module';
     UserModule,
     FriendRequestModule,
     FriendshipModule,
+    ConversationModule,
+    MessageModule,
   ],
   controllers: [],
   providers: [],

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -13,7 +14,14 @@ export class ConversationService {
   async create(createConversationDto: CreateConversationDto, userId: string) {
     const { participants } = createConversationDto;
 
-    // Ensure the current user is part of the conversation
+    if(participants.length === 0) {
+      throw new NotFoundException('Participants not found');
+    }
+
+    if (new Set(participants).size !== participants.length) {
+      throw new BadRequestException('Participants array contains duplicate user IDs');
+    }
+
     if (!participants.includes(userId)) {
       participants.push(userId);
     }

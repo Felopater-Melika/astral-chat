@@ -240,4 +240,73 @@ describe('Api (e2e)', () => {
         .expectStatus(200);
     });
   });
+  describe('Conversation (e2e)', () => {
+    // Test for creating a conversation
+    it('/conversation (POST)', () => {
+      return pactum
+        .spec()
+        .post('/conversation')
+        .withBody({
+          participants: ['$S{user1Id}', '$S{user2Id}'],
+        })
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(201)
+        .expectBodyContains('id')
+        .stores('conversationId', 'id');
+    });
+
+    // Test for getting all conversations for a user
+    it('/conversation (GET)', () => {
+      return pactum
+        .spec()
+        .get('/conversation')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+
+    // Test for deleting a conversation
+    it('/conversation/:id (DELETE)', () => {
+      return pactum
+        .spec()
+        .delete('/conversation/$S{conversationId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+  });
+
+  describe('Message (e2e)', () => {
+    // Test for creating a message
+    it('/message (POST)', () => {
+      return pactum
+        .spec()
+        .post('/message')
+        .withBody({
+          conversationId: '$S{conversationId}',
+          body: 'Hello, world!',
+        })
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(201)
+        .expectBodyContains('id')
+        .stores('messageId', 'id');
+    });
+
+    // Test for getting all messages in a conversation
+    it('/message/:conversationId (GET)', () => {
+      return pactum
+        .spec()
+        .get('/message/$S{conversationId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+  });
 });
