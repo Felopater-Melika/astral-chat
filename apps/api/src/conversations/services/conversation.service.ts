@@ -14,12 +14,16 @@ export class ConversationService {
   async create(createConversationDto: CreateConversationDto, userId: string) {
     const { participants } = createConversationDto;
 
-    if(participants.length === 0) {
+    console.log('Participants', participants);
+
+    if (participants.length === 0) {
       throw new NotFoundException('Participants not found');
     }
 
     if (new Set(participants).size !== participants.length) {
-      throw new BadRequestException('Participants array contains duplicate user IDs');
+      throw new BadRequestException(
+        'Participants array contains duplicate user IDs'
+      );
     }
 
     if (!participants.includes(userId)) {
@@ -89,6 +93,14 @@ export class ConversationService {
     if (!conversation.participants.some((p) => p.userId === userId)) {
       throw new UnauthorizedException();
     }
+
+    await this.prisma.message.deleteMany({
+      where: { conversationId: id },
+    });
+
+    await this.prisma.conversationParticipant.deleteMany({
+      where: { conversationId: id },
+    });
 
     await this.prisma.conversation.delete({ where: { id } });
 

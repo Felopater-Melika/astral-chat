@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   Delete,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ConversationService } from '../services/conversation.service';
 import { CreateConversationDto } from '../dto/create-conversation.dto';
@@ -26,17 +27,26 @@ export class ConversationController {
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@GetUser() user) {
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     return this.conversationService.findAll(user.id);
   }
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @GetUser() user) {
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     return this.conversationService.findOne(id, user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user) {
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     return this.conversationService.remove(id, user.id);
   }
 }

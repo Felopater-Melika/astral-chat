@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Query,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { MessageService } from '../services/message.service';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { JwtAuthGuard } from '../../auth/guards/auth.guard';
@@ -11,11 +20,24 @@ export class MessageController {
 
   @Post()
   create(@Body() createMessageDto: CreateMessageDto, @GetUser() user) {
+    console.log('createMessageDto', createMessageDto);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     return this.messageService.create(createMessageDto, user.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@GetUser() user) {
-    return this.messageService.findAll(user.id);
+  findAll(@Query('conversationId') conversationId: string, @GetUser() user) {
+    if (!conversationId) {
+      throw new BadRequestException('conversationId must be provided');
+    }
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return this.messageService.findAll(conversationId, user.id);
   }
 }

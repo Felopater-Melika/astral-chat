@@ -37,10 +37,20 @@ export class MessageService {
     return message;
   }
 
-  async findAll(userId: string) {
+  async findAll(conversationId: string, userId: string) {
+    // Ensure the user is part of the conversation
+    const conversation = await this.prisma.conversation.findUnique({
+      where: { id: conversationId },
+      include: { participants: true },
+    });
+
+    if (!conversation.participants.some((p) => p.userId === userId)) {
+      throw new UnauthorizedException();
+    }
+
     return this.prisma.message.findMany({
       where: {
-        senderId: userId,
+        conversationId: conversationId,
       },
       include: {
         conversation: true,

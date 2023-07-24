@@ -268,6 +268,17 @@ describe('Api (e2e)', () => {
         .expectStatus(200);
     });
 
+    // Test for getting a specific conversation
+    it('/conversation/:id (GET)', () => {
+      return pactum
+        .spec()
+        .get('/conversation/$S{conversationId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+
     // Test for deleting a conversation
     it('/conversation/:id (DELETE)', () => {
       return pactum
@@ -287,6 +298,7 @@ describe('Api (e2e)', () => {
         .spec()
         .post('/message')
         .withBody({
+          senderId: '$S{user1Id}',
           conversationId: '$S{conversationId}',
           body: 'Hello, world!',
         })
@@ -298,11 +310,14 @@ describe('Api (e2e)', () => {
         .stores('messageId', 'id');
     });
 
-    // Test for getting all messages in a conversation
-    it('/message/:conversationId (GET)', () => {
+    // Test for getting all messages for a specific conversation
+    it('/message (GET)', () => {
       return pactum
         .spec()
-        .get('/message/$S{conversationId}')
+        .get('/message')
+        .withQueryParams({
+          conversationId: '$S{conversationId}',
+        })
         .withHeaders({
           Authorization: 'Bearer $S{userAt}',
         })
