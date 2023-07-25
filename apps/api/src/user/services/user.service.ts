@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Simulate } from 'react-dom/test-utils';
-import select = Simulate.select;
 
 @Injectable()
 export class UserService {

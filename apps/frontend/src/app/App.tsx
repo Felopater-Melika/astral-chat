@@ -12,7 +12,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from '../screens/ProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ConversationsScreen from '../screens/ConversationsScreen';
-import { Ionicons } from '@expo/vector-icons'; // adjust the import path according to your folder structure
+import { Ionicons } from '@expo/vector-icons';
+import FriendsScreen from '../screens/FriendsScreen'; // adjust the import path according to your folder structure
 
 export type StackParamList = {
   Register: undefined;
@@ -23,18 +24,43 @@ export type StackParamList = {
 export type BottomTabNavigatorParamList = {
   Profile: undefined;
   Chat: undefined;
-  Conversations: undefined;
+  Friends: undefined;
 };
+
+export type ChatStackParamList = {
+  Conversations: undefined;
+  Chat: { conversationId: string };
+};
+
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
+const ChatStack = createNativeStackNavigator<ChatStackParamList>();
+
 const queryClient = new QueryClient();
+
+function ChatStackNavigator() {
+  return (
+    <ChatStack.Navigator>
+      <ChatStack.Screen
+        name="Conversations"
+        component={ConversationsScreen}
+        options={{ headerShown: false }}
+      />
+      <ChatStack.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{ headerShown: false }}
+      />
+    </ChatStack.Navigator>
+  );
+}
 
 function TabNavigator() {
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="Chat"
-        component={ChatScreen}
+        component={ChatStackNavigator}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, size }) => (
@@ -46,8 +72,8 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Conversations"
-        component={ConversationsScreen}
+        name="Friends"
+        component={FriendsScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, size }) => (
