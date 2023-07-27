@@ -1,7 +1,8 @@
 import React from 'react';
+import { VStack } from 'native-base';
 
 const FriendsScreen = () => {
-  return <div>FriendsScreen</div>;
+  return <VStack></VStack>;
 };
 
 export default FriendsScreen;
