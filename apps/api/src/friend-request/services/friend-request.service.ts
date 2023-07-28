@@ -9,18 +9,28 @@ export class FriendRequestService {
   constructor(private prisma: PrismaService) {}
 
   async create(createFriendRequestDto: CreateFriendRequestDto) {
-    const { senderId, recipientId } = createFriendRequestDto;
+    const { senderId, recipientUsername } = createFriendRequestDto;
     if (!senderId) {
       throw new BadRequestException('senderId must be provided');
     }
 
-    if (!recipientId) {
-      throw new BadRequestException('recipientId must be provided');
+    if (!recipientUsername) {
+      throw new BadRequestException('recipientUsername must be provided');
     }
+
+    // Find the recipient based on their username
+    const recipient = await this.prisma.user.findUnique({
+      where: { username: recipientUsername },
+    });
+
+    if (!recipient) {
+      throw new BadRequestException('Recipient not found');
+    }
+
     return this.prisma.friendRequest.create({
       data: {
         senderId,
-        recipientId,
+        recipientId: recipient.id,
         status: 'PENDING',
       },
     });

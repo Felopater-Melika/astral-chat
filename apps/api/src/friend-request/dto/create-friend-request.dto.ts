@@ -5,5 +5,5 @@ export class CreateFriendRequestDto {
   senderId: string;
 
   @IsNotEmpty()
-  recipientId: string;
+  recipientUsername: string;
 }

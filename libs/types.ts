@@ -16,3 +16,12 @@ export interface IUser {
   lastName?: string;
   username?: string;
 }
+
+export interface ICreateFriendRequest {
+  senderId: string;
+  recipientUsername: string;
+}
+
+export interface IUpdateFriendRequest {
+  status: string;
+}
