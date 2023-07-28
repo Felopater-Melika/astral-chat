@@ -1,14 +1,21 @@
 import {
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateMessageDto } from '../dto/create-message.dto';
+import { MessageGateway } from '../sockets/message.gateway';
 
 @Injectable()
 export class MessageService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(forwardRef(() => MessageGateway))
+    private readonly messageGateway: MessageGateway
+  ) {}
 
   async create(createMessageDto: CreateMessageDto, userId: string) {
     const { conversationId, body } = createMessageDto;
@@ -31,6 +38,13 @@ export class MessageService {
         body,
         senderId: userId,
         conversationId,
+      },
+    });
+
+    await this.prisma.conversation.update({
+      where: { id: conversationId },
+      data: {
+        latestMessageId: message.id,
       },
     });
 

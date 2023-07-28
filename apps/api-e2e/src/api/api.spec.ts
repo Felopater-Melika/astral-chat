@@ -21,10 +21,10 @@ describe('Api (e2e)', () => {
       })
     );
     await app.init();
-    await app.listen(3000);
+    await app.listen(4000);
 
     prisma = app.get(PrismaService);
-    pactum.request.setBaseUrl('http://localhost:3000');
+    pactum.request.setBaseUrl('http://localhost:4000');
   });
 
   afterAll(() => {
