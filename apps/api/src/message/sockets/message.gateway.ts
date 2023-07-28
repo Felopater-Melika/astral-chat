@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { MessageService } from '../services/message.service';
-import { forwardRef, Inject, UseGuards } from '@nestjs/common';
+import { forwardRef, Inject } from '@nestjs/common';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:3000', credentials: true },
