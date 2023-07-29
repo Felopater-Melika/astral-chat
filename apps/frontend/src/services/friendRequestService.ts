@@ -3,6 +3,7 @@ import {
   QueryFunctionContext,
   useMutation,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
 import {
@@ -11,7 +12,7 @@ import {
 } from '../../../../libs/types';
 import { getToken } from '../utils/storage';
 
-const apiUrl = Constants?.manifest?.extra?.apiUrl;
+const apiUrl = Constants?.manifest?.extra?.API_URL;
 
 const sendFriendRequest = async (createFriendRequest: ICreateFriendRequest) => {
   const token = await getToken();
@@ -30,7 +31,6 @@ const sendFriendRequest = async (createFriendRequest: ICreateFriendRequest) => {
 const getFriendRequests = async (context: QueryFunctionContext<string[]>) => {
   const userId = context.queryKey[1];
   const token = await getToken();
-  console.log(userId, token);
   const response = await axios.get(`${apiUrl}/friend-request/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -60,23 +60,47 @@ const updateFriendRequest = async ({
   return response.data;
 };
 
-const deleteFriendRequest = async (requestId: string) => {
-  const response = await axios.delete(`${apiUrl}/friend-request/${requestId}`);
+const deleteFriendRequest = async (requestId: { requestId: string }) => {
+  const response = await axios.delete(
+    `${apiUrl}/friend-request/${requestId.requestId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${await getToken()}`,
+      },
+    }
+  );
   return response.data;
 };
 
-export const useSendFriendRequest = () => {
-  return useMutation(sendFriendRequest);
+export const useSendFriendRequest = (userId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(sendFriendRequest, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friendRequests', userId]);
+    },
+  });
 };
 
 export const useGetFriendRequests = (userId: string) => {
   return useQuery(['friendRequests', userId], getFriendRequests);
 };
 
-export const useUpdateFriendRequest = () => {
-  return useMutation(updateFriendRequest);
+export const useUpdateFriendRequest = (userId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(updateFriendRequest, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['friendRequests', userId]);
+    },
+  });
 };
-
-export const useDeleteFriendRequest = () => {
-  return useMutation(deleteFriendRequest);
+export const useDeleteFriendRequest = (userId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (requestId: { requestId: string }) => deleteFriendRequest(requestId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['friendRequests', userId]);
+      },
+    }
+  );
 };

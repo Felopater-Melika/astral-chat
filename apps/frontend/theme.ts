@@ -25,17 +25,6 @@ const theme = extendTheme({
         align: 'center',
       },
     },
-    VStack: {
-      defaultProps: {
-        colorScheme: 'indigo',
-        mx: 'auto',
-        my: 'auto',
-        maxWidth: '200px',
-        align: 'center',
-        justify: 'center',
-        space: 3,
-      },
-    },
     Box: {
       defaultProps: {
         colorScheme: 'indigo',

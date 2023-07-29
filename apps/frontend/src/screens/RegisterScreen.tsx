@@ -49,7 +49,13 @@ const RegisterScreen = () => {
   const handleCloseModal = () => setShowModal(false);
 
   return (
-    <VStack>
+    <VStack
+      colorScheme={'indigo'}
+      mx={'auto'}
+      my={'auto'}
+      maxWidth={'200px'}
+      space={3}
+    >
       <FormControl isInvalid={'firstName' in errors}>
         <Controller
           control={control}
