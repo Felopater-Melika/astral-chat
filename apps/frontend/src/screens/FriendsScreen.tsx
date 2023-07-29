@@ -18,7 +18,7 @@ const FriendRequest = ({
   request,
   updateFriendRequest,
 }: {
-  request: any;
+  request: { id: string; username: string };
   updateFriendRequest: any;
 }) => {
   return (
@@ -56,7 +56,6 @@ const FriendRequest = ({
 };
 
 const FriendsScreen = () => {
-  const userId = 'your-user-id'; // Replace with the actual user ID
   const {
     data: friendRequests,
     isLoading,

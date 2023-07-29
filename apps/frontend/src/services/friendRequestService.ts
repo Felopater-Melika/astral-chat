@@ -30,6 +30,7 @@ const sendFriendRequest = async (createFriendRequest: ICreateFriendRequest) => {
 const getFriendRequests = async (context: QueryFunctionContext<string[]>) => {
   const userId = context.queryKey[1];
   const token = await getToken();
+  console.log(userId, token);
   const response = await axios.get(`${apiUrl}/friend-request/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
