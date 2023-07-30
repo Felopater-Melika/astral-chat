@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateFriendRequestDto } from '../dto/create-friend-request.dto';
 import { UpdateFriendRequestDto } from '../dto/update-friend-request.dto';
-import { logger } from 'nx/src/utils/logger';
 
 @Injectable()
 export class FriendRequestService {
@@ -18,7 +17,6 @@ export class FriendRequestService {
       throw new BadRequestException('recipientUsername must be provided');
     }
 
-    // Find the recipient based on their username
     const recipient = await this.prisma.user.findUnique({
       where: { username: recipientUsername },
     });
@@ -40,6 +38,13 @@ export class FriendRequestService {
     return this.prisma.friendRequest.findMany({
       where: {
         OR: [{ senderId: userId }, { recipientId: userId }],
+      },
+      include: {
+        recipient: {
+          select: {
+            username: true, // Select only username
+          },
+        },
       },
     });
   }
