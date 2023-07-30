@@ -25,6 +25,7 @@ export class FriendshipController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user) {
+    console.log(id, user);
     if (!user) {
       throw new UnauthorizedException();
     }

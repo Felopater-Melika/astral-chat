@@ -11,6 +11,7 @@ import {
   Heading,
   Button,
   Input,
+  Toast,
 } from 'native-base';
 import {
   useDeleteFriendRequest,
@@ -21,6 +22,10 @@ import {
 import { getToken } from '../utils/storage';
 import jwtDecode from 'jwt-decode';
 import { MaterialIcons } from '@expo/vector-icons';
+import {
+  useDeleteFriendship,
+  useGetFriendships,
+} from '../services/friendshipService';
 
 interface JwtDecoded {
   iat: string;
@@ -33,7 +38,15 @@ const FriendRequest = ({
   deleteFriendRequest,
   userId,
 }: {
-  request: { id: string; status: string; username: string; senderId: string };
+  request: {
+    id: string;
+    status: string;
+    username: string;
+    senderId: string;
+    recipient: {
+      username: string;
+    };
+  };
   updateFriendRequest: any;
   deleteFriendRequest: any;
   userId: string;
@@ -55,9 +68,9 @@ const FriendRequest = ({
         alignItems="center"
         justifyContent={'space-evenly'}
       >
-        <Text>{request.id.slice(0, 8)}...</Text>
+        <Text>{request.recipient.username}</Text>
         <Text>{request.status.toLowerCase()}</Text>
-        {request.senderId !== userId && (
+        {request.senderId === userId && (
           <>
             <IconButton
               icon={
@@ -98,12 +111,65 @@ const FriendRequest = ({
   );
 };
 
+const Friend = ({
+  friend,
+  deleteFriendship,
+}: {
+  friend: { id: string; friend: { username: string; id: string } };
+  deleteFriendship: any;
+}) => {
+  return (
+    <Center
+      bg="primary.200"
+      rounded="lg"
+      w={'100%'}
+      px={2}
+      my={2}
+      shadow={1}
+      _light={{ backgroundColor: 'gray.200' }}
+      _dark={{ backgroundColor: 'gray.900' }}
+    >
+      <HStack
+        space={5}
+        alignItems="center"
+        px={2}
+        justifyContent={'space-between'}
+        w={'100%'}
+      >
+        <Text>{friend.friend.username}</Text>
+        <IconButton
+          icon={<MaterialIcons name="delete" size={24} color="gray" />}
+          onPress={() => deleteFriendship.mutate(friend.id)}
+        />
+      </HStack>
+    </Center>
+  );
+};
+
 const FriendsScreen = () => {
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState<string>('');
+  const [senderUsername, setSenderUsername] = useState('');
   const sendFriendRequest = useSendFriendRequest(userId);
+  const {
+    data: friendships,
+    isLoading: isLoadingFriendships,
+    isError: isErrorFriendships,
+  } = useGetFriendships();
 
+  const deleteFriendship = useDeleteFriendship();
   const handleSendFriendRequest = () => {
+    if (username === senderUsername) {
+      Toast.show({
+        title: 'Error',
+        description: "You can't send a friend request to yourself",
+        bgColor: 'danger.500',
+        variant: 'danger',
+        duration: 4000,
+      });
+      return;
+    }
+
     sendFriendRequest.mutate({ senderId: userId, recipientUsername: username });
     setUsername('');
   };
@@ -113,7 +179,6 @@ const FriendsScreen = () => {
     isError,
   } = useGetFriendRequests(userId);
 
-  console.log(friendRequests);
   const updateFriendRequest = useUpdateFriendRequest(userId);
   const deleteFriendRequest = useDeleteFriendRequest(userId);
 
@@ -124,13 +189,14 @@ const FriendsScreen = () => {
         return;
       }
       const decoded: JwtDecoded = jwtDecode(token);
+      setSenderUsername(decoded.username);
       setUserId(decoded.sub);
     };
 
     fetchTokenAndDecode();
   }, []);
 
-  if (isLoading || !userId) {
+  if (isLoading || isLoadingFriendships || !userId) {
     return (
       <Box flex={1} justifyContent="center" alignItems="center">
         <Spinner />
@@ -138,10 +204,10 @@ const FriendsScreen = () => {
     );
   }
 
-  if (isError) {
+  if (isError || isErrorFriendships) {
     return (
       <Box flex={1} justifyContent="center" alignItems="center">
-        <Text>Error loading friend requests</Text>
+        <Text>Error loading data</Text>
       </Box>
     );
   }
@@ -178,6 +244,13 @@ const FriendsScreen = () => {
       <Heading size="md" alignSelf="flex-start">
         Your Friends
       </Heading>
+      {friendships.map((friend: any) => (
+        <Friend
+          key={friend.id}
+          friend={friend}
+          deleteFriendship={deleteFriendship}
+        />
+      ))}
     </VStack>
   );
 };
