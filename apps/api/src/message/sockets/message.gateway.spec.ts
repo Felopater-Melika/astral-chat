@@ -37,7 +37,7 @@ describe('MessageGateway_class', () => {
     );
   });
 
-  // Tests that handleMessage calls messageService.create with the correct arguments
+  // Tests that handleMessage calls messageService.ts.create with the correct arguments
   it('test_handle_message_calls_create_with_correct_arguments', async () => {
     const payload = { senderId: '1', conversationId: '2', body: 'hello' };
     const messageServiceMock = {

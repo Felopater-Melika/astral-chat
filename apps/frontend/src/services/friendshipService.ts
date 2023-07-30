@@ -16,7 +16,6 @@ const getFriendships = async () => {
 };
 
 const deleteFriendship = async (id: string) => {
-  console.log(id);
   const token = await getToken();
   const response = await axios.delete(`${apiUrl}/friendship/${id}`, {
     headers: {

@@ -20,7 +20,6 @@ export class MessageController {
 
   @Post()
   create(@Body() createMessageDto: CreateMessageDto, @GetUser() user) {
-    console.log('createMessageDto', createMessageDto);
     if (!user) {
       throw new UnauthorizedException();
     }

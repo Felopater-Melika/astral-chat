@@ -90,6 +90,7 @@ export const useUpdateFriendRequest = (userId: string) => {
   return useMutation(updateFriendRequest, {
     onSuccess: () => {
       queryClient.invalidateQueries(['friendRequests', userId]);
+      queryClient.invalidateQueries(['friends', userId]);
     },
   });
 };

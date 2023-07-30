@@ -18,7 +18,8 @@ export class MessageService {
   ) {}
 
   async create(createMessageDto: CreateMessageDto, userId: string) {
-    const { conversationId, body } = createMessageDto;
+    const { conversationId, body, senderId } = createMessageDto;
+    console.log('Creating message with DTO:', createMessageDto);
 
     const conversation = await this.prisma.conversation.findUnique({
       where: { id: conversationId },
@@ -35,8 +36,8 @@ export class MessageService {
 
     const message = await this.prisma.message.create({
       data: {
-        body,
-        senderId: userId,
+        body: body,
+        senderId: senderId,
         conversationId,
       },
     });
@@ -47,6 +48,7 @@ export class MessageService {
         latestMessageId: message.id,
       },
     });
+    console.log('Created message:', message);
 
     return message;
   }

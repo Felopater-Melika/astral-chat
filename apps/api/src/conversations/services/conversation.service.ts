@@ -14,8 +14,6 @@ export class ConversationService {
   async create(createConversationDto: CreateConversationDto, userId: string) {
     const { participants } = createConversationDto;
 
-    console.log('Participants', participants);
-
     if (participants.length === 0) {
       throw new NotFoundException('Participants not found');
     }
@@ -54,7 +52,11 @@ export class ConversationService {
         },
       },
       include: {
-        participants: true,
+        participants: {
+          include: {
+            user: true,
+          },
+        },
         messages: true,
       },
     });
@@ -93,6 +95,11 @@ export class ConversationService {
     if (!conversation.participants.some((p) => p.userId === userId)) {
       throw new UnauthorizedException();
     }
+
+    await this.prisma.conversation.update({
+      where: { id },
+      data: { latestMessageId: null },
+    });
 
     await this.prisma.message.deleteMany({
       where: { conversationId: id },

@@ -13,54 +13,32 @@ import ProfileScreen from '../screens/ProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ConversationsScreen from '../screens/ConversationsScreen';
 import { Ionicons } from '@expo/vector-icons';
-import FriendsScreen from '../screens/FriendsScreen'; // adjust the import path according to your folder structure
+import FriendsScreen from '../screens/FriendsScreen';
 
 export type StackParamList = {
   Register: undefined;
   Login: undefined;
   Tabs: undefined;
+  Chat: { conversationId: string; recipientName: string };
 };
 
 export type BottomTabNavigatorParamList = {
-  Profile: undefined;
-  Chat: undefined;
-  Friends: undefined;
-};
-
-export type ChatStackParamList = {
   Conversations: undefined;
-  Chat: { conversationId: string };
+  Friends: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
-const ChatStack = createNativeStackNavigator<ChatStackParamList>();
 
 const queryClient = new QueryClient();
 
-function ChatStackNavigator() {
-  return (
-    <ChatStack.Navigator>
-      <ChatStack.Screen
-        name="Conversations"
-        component={ConversationsScreen}
-        options={{ headerShown: false }}
-      />
-      <ChatStack.Screen
-        name="Chat"
-        component={ChatScreen}
-        options={{ headerShown: false }}
-      />
-    </ChatStack.Navigator>
-  );
-}
-
-function TabNavigator() {
+function HomeTabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Chat"
-        component={ChatStackNavigator}
+        name="Conversations"
+        component={ConversationsScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, size }) => (
@@ -107,11 +85,18 @@ function MainComponent() {
   return (
     <Stack.Navigator>
       {isSignedIn ? (
-        <Stack.Screen
-          name="Tabs"
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
+        <>
+          <Stack.Screen
+            name="Tabs"
+            component={HomeTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Chat"
+            component={ChatScreen}
+            options={{ headerShown: false }}
+          />
+        </>
       ) : (
         <>
           <Stack.Screen name="Register" component={RegisterScreen} />

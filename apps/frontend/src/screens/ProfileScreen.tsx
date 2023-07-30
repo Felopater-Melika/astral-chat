@@ -75,7 +75,6 @@ function ProfileScreen() {
           duration: 4000,
           placement: 'bottom',
         });
-        console.log(false);
       },
     });
   };
@@ -94,7 +93,7 @@ function ProfileScreen() {
   const initials = `${profile.firstName[0]}${profile.lastName[0]}`;
 
   return (
-    <Center width="100%" height="100%">
+    <Center mt={20} width="100%" height="100%">
       <Avatar size="2xl" bg="indigo.500">
         {initials}
       </Avatar>

@@ -17,7 +17,6 @@ export class FriendshipService {
     });
 
     return friendships.map((friendship) => {
-      console.log(friendship.id);
       return {
         id: friendship.id,
         friend:

@@ -31,7 +31,6 @@ const LoginScreen = () => {
     loginMutation.mutate(data, {
       onSuccess: () => {
         setIsSignedIn(true);
-        console.log(isSignedIn);
       },
       onError: (error: any) => {
         console.log('Login Error', error.message);
@@ -40,7 +39,13 @@ const LoginScreen = () => {
   };
 
   return (
-    <VStack>
+    <VStack
+      colorScheme={'indigo'}
+      mx={'auto'}
+      my={'auto'}
+      maxWidth={'200px'}
+      space={3}
+    >
       <FormControl isInvalid={'username' in errors}>
         <Controller
           control={control}
@@ -61,7 +66,6 @@ const LoginScreen = () => {
           {errors.username?.message}
         </FormControl.ErrorMessage>
       </FormControl>
-
       <FormControl isInvalid={'password' in errors}>
         <Controller
           control={control}
@@ -83,7 +87,6 @@ const LoginScreen = () => {
           {errors.password?.message}
         </FormControl.ErrorMessage>
       </FormControl>
-
       <Button onPress={handleSubmit(onSubmit)}>Login</Button>
       <Box>
         <Text>

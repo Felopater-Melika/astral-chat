@@ -26,6 +26,7 @@ import {
   useDeleteFriendship,
   useGetFriendships,
 } from '../services/friendshipService';
+import { useCreateConversation } from '../services/conversationService';
 
 interface JwtDecoded {
   iat: string;
@@ -113,11 +114,14 @@ const FriendRequest = ({
 
 const Friend = ({
   friend,
+  userId,
   deleteFriendship,
 }: {
   friend: { id: string; friend: { username: string; id: string } };
+  userId: string;
   deleteFriendship: any;
 }) => {
+  const createConversation = useCreateConversation();
   return (
     <Center
       bg="primary.200"
@@ -137,6 +141,11 @@ const Friend = ({
         w={'100%'}
       >
         <Text>{friend.friend.username}</Text>
+        <IconButton
+          icon={<MaterialIcons name="chat" size={24} color="gray" />}
+          onPress={() => createConversation.mutate([userId, friend.friend.id])}
+        />
+
         <IconButton
           icon={<MaterialIcons name="delete" size={24} color="gray" />}
           onPress={() => deleteFriendship.mutate(friend.id)}
@@ -248,6 +257,7 @@ const FriendsScreen = () => {
         <Friend
           key={friend.id}
           friend={friend}
+          userId={userId}
           deleteFriendship={deleteFriendship}
         />
       ))}
