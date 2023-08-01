@@ -11,18 +11,13 @@ import {
   useGetConversations,
   useDeleteConversation,
 } from '../services/conversationService';
-import { ChatStackParamList } from '../app/App';
 import { useNavigation } from '@react-navigation/core';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { getToken } from '../utils/storage';
 import jwtDecode from 'jwt-decode';
 import { MaterialIcons } from '@expo/vector-icons';
-
-type NavigationProp = NativeStackNavigationProp<
-  ChatStackParamList,
-  'Conversations'
->;
+import { NavigationProp } from '@react-navigation/native';
+import { StackParamList } from '../app/App';
 
 interface JwtDecoded {
   iat: string;
@@ -33,7 +28,7 @@ function ConversationScreen() {
   const [userId, setUserId] = useState<string>('');
   const { data: conversations, isLoading, isError } = useGetConversations();
   const deleteConversation = useDeleteConversation();
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<NavigationProp<StackParamList>>();
   const [search, setSearch] = useState('');
 
   useEffect(() => {

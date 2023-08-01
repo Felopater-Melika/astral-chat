@@ -49,12 +49,25 @@ function ChatScreen({ route }: ChatScreenProps) {
     };
 
     fetchTokenAndDecode();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    scrollViewRef?.current?.scrollToEnd({ animated: false });
   }, []);
-
   const { messages, isLoading, isError, sendChatMessage } = useChat(
     conversationId,
     userId
   );
+
+  const filteredMessages = messages?.filter(
+    (message: any) => message.conversationId === conversationId
+  );
+
+  useEffect(() => {
+    // Scroll to the bottom of the ScrollView whenever a new message is received
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    scrollViewRef?.current?.scrollToEnd({ animated: true });
+  }, [filteredMessages]); // Add messages as a dependency
 
   const handleSendMessage = () => {
     if (message) {
@@ -89,7 +102,7 @@ function ChatScreen({ route }: ChatScreenProps) {
           </HStack>
         </Box>
         <ScrollView ref={scrollViewRef}>
-          {messages.map((message: any, index: any) => (
+          {filteredMessages.map((message: any, index: any) => (
             <Box
               rounded="lg"
               p={4}

@@ -45,6 +45,7 @@ function HomeTabs() {
             <Ionicons
               name={focused ? 'chatbubbles' : 'chatbubbles-outline'}
               size={size}
+              color={darkTheme.colors.text}
             />
           ),
         }}
@@ -58,6 +59,7 @@ function HomeTabs() {
             <Ionicons
               name={focused ? 'chatbox' : 'chatbox-outline'}
               size={size}
+              color={darkTheme.colors.text}
             />
           ),
         }}
@@ -71,6 +73,7 @@ function HomeTabs() {
             <Ionicons
               name={focused ? 'person' : 'person-outline'}
               size={size}
+              color={darkTheme.colors.text}
             />
           ),
         }}

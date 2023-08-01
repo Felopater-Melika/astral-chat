@@ -60,7 +60,9 @@ export const useCreateConversation = () => {
 };
 
 export const useGetConversations = () => {
-  return useQuery(['conversations'], getConversations);
+  return useQuery(['conversations'], getConversations, {
+    refetchInterval: 10000,
+  });
 };
 
 export const useGetConversation = (id: string) => {

@@ -38,7 +38,6 @@ export class MessageGateway
   }
 
   handleDisconnect(client: Socket) {
-    console.log(`Client disconnected: ${client.id}`);
     // When a client disconnects, remove them from the map.
     for (const userId in this.userSocketMap) {
       if (this.userSocketMap[userId] === client.id) {
@@ -60,30 +59,6 @@ export class MessageGateway
       },
       payload.senderId
     );
-    console.log('Emitting newMessage event with message:', newMessage);
     this.server.emit('newMessage', newMessage); // change this line
-  }
-
-  // This is a placeholder function. You'll need to implement this to determine
-  // the recipient ID based on the conversation ID and the sender ID.
-  async getRecipientId(
-    conversationId: string,
-    senderId: string
-  ): Promise<string | null> {
-    const conversation = await this.prisma.conversation.findUnique({
-      where: { id: conversationId },
-      include: { participants: true },
-    });
-
-    if (!conversation) {
-      throw new NotFoundException('Conversation not found');
-    }
-
-    // Find the participant who is not the sender.
-    const recipient = conversation.participants.find(
-      (p) => p.userId !== senderId
-    );
-
-    return recipient ? recipient.userId : null;
   }
 }
