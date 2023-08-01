@@ -11,7 +11,7 @@ import { forwardRef, Inject, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 
 @WebSocketGateway({
-  cors: { origin: 'http://localhost:3000', credentials: true },
+  cors: { origin: '*', credentials: true },
 })
 export class MessageGateway
   implements OnGatewayConnection, OnGatewayDisconnect

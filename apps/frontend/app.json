@@ -5,7 +5,10 @@
     "version": "1.0.0",
     "extra": {
       "API_URL_PC": "http://10.0.2.2:3000/api",
-      "API_URL": "http://192.168.0.82:3000/api"
+      "API_URL": "http://192.168.0.82:3000/api",
+      "eas": {
+        "projectId": "39dfc6ac-2500-4a47-8584-db050dee494e"
+      }
     },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,7 +30,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.philopater.frontend"
     },
     "web": {
       "favicon": "./assets/favicon.png",
