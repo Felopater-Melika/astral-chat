@@ -5,7 +5,7 @@ import { getToken } from '../utils/storage';
 import Constants from 'expo-constants';
 import { AppContext } from '../app/AppContext';
 
-const apiUrl = Constants?.manifest?.extra?.API_URL;
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 
 const getMessageService = async (conversationId: any) => {
   const response = await axios.get(

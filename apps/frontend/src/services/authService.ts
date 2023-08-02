@@ -6,9 +6,10 @@ import { removeToken, storeToken } from '../utils/storage';
 import { useMutation } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 
-const apiUrl = Constants?.manifest?.extra?.API_URL;
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 
 const loginUser = async (credentials: ILogin) => {
+  console.log(apiUrl);
   const { data } = await axios.post(apiUrl + '/auth/login', credentials);
   await storeToken(data.access_token);
   return data;

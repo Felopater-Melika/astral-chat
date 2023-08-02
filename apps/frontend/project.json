@@ -31,7 +31,9 @@
     },
     "build": {
       "executor": "@nx/expo:build",
-      "options": {}
+      "options": {
+        "platform": "android"
+      }
     },
     "submit": {
       "executor": "@nx/expo:submit",

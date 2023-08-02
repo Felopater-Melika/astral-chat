@@ -4,7 +4,7 @@ import { getToken } from '../utils/storage';
 import Constants from 'expo-constants';
 import { IUser } from '../../../../libs/types';
 
-const apiUrl = Constants?.manifest?.extra?.API_URL;
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 const getProfile = async () => {
   const token = await getToken();
   const { data } = await axios.get(apiUrl + '/user/profile', {

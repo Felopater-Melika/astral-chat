@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 import { getToken } from '../utils/storage';
 
-const apiUrl = Constants?.manifest?.extra?.API_URL;
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 
 const createConversation = async (participants: string[]) => {
   const response = await axios.post(

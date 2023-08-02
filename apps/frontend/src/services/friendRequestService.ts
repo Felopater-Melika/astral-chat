@@ -12,7 +12,7 @@ import {
 } from '../../../../libs/types';
 import { getToken } from '../utils/storage';
 
-const apiUrl = Constants?.manifest?.extra?.API_URL;
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 
 const sendFriendRequest = async (createFriendRequest: ICreateFriendRequest) => {
   const token = await getToken();

@@ -3,7 +3,7 @@ import { getToken } from '../utils/storage';
 import Constants from 'expo-constants';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-const apiUrl = Constants?.manifest?.extra?.API_URL;
+const apiUrl = Constants?.expoConfig?.extra?.API_URL;
 
 const getFriendships = async () => {
   const token = await getToken();
