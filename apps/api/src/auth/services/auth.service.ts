@@ -36,7 +36,7 @@ export class AuthService {
       .sendMail({
         to: dto.email,
         subject: 'Verify your email address',
-        html: `<a href="http://localhost:3000/api/auth/verify/${verificationToken.token}">Verify your email address</a>`,
+        html: `<a href="http://192.168.0.82:3000/api/auth/verify/${verificationToken.token}">Verify your email address</a>`,
       })
       .then(() => {
         Logger.log('Email sent');
@@ -53,6 +53,7 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    console.log(dto)
     const user = await this.prisma.user.findUnique({
       where: { username: dto.username },
     });

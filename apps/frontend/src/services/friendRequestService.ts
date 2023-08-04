@@ -82,7 +82,9 @@ export const useSendFriendRequest = (userId: string) => {
 };
 
 export const useGetFriendRequests = (userId: string) => {
-  return useQuery(['friendRequests', userId], getFriendRequests);
+  return useQuery(['friendRequests', userId], getFriendRequests, {
+    refetchInterval: 10000,
+  });
 };
 
 export const useUpdateFriendRequest = (userId: string) => {

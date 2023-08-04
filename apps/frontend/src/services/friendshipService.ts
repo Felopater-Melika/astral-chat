@@ -26,7 +26,9 @@ const deleteFriendship = async (id: string) => {
 };
 
 export const useGetFriendships = () => {
-  return useQuery(['friendships'], getFriendships);
+  return useQuery(['friendships'], getFriendships, {
+    refetchInterval: 10000,
+  });
 };
 
 export const useDeleteFriendship = () => {

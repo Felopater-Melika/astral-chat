@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { Simulate } from 'react-dom/test-utils';
 
 @Injectable()
 export class UserService {
@@ -57,6 +56,25 @@ export class UserService {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+
+    await this.prisma.message.deleteMany({
+      where: { senderId: id },
+    });
+    await this.prisma.conversationParticipant.deleteMany({
+      where: { userId: id },
+    });
+
+    await this.prisma.friendRequest.deleteMany({
+      where: {
+        OR: [{ senderId: id }, { recipientId: id }],
+      },
+    });
+
+    await this.prisma.friendship.deleteMany({
+      where: {
+        OR: [{ user1Id: id }, { user2Id: id }],
+      },
+    });
 
     return this.prisma.user.delete({
       where: { id },

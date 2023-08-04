@@ -57,3 +57,4 @@ cache/
 apps/mobile-e2e/artifacts
 
 .env
+apps/my-app-e2e/artifacts
