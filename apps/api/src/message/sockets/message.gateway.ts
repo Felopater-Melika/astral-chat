@@ -19,7 +19,6 @@ export class MessageGateway
   @WebSocketServer()
   server: Server;
 
-  // This object will store the mapping between user IDs and socket IDs.
   private userSocketMap: { [userId: string]: string } = {};
 
   constructor(
@@ -30,8 +29,6 @@ export class MessageGateway
 
   handleConnection(client: Socket, ...args: any[]) {
     console.log(`Client connected: ${client.id}`);
-    // When a client connects, store their user ID and socket ID in the map.
-    // The user ID should be sent by the client after connecting.
     client.on('register', (userId: string) => {
       this.userSocketMap[userId] = client.id;
     });
@@ -59,6 +56,6 @@ export class MessageGateway
       },
       payload.senderId
     );
-    this.server.emit('newMessage', newMessage); // change this line
+    this.server.emit('newMessage', newMessage);
   }
 }
