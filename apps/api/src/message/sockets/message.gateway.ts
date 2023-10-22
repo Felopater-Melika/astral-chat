@@ -35,7 +35,6 @@ export class MessageGateway
   }
 
   handleDisconnect(client: Socket) {
-    // When a client disconnects, remove them from the map.
     for (const userId in this.userSocketMap) {
       if (this.userSocketMap[userId] === client.id) {
         delete this.userSocketMap[userId];
